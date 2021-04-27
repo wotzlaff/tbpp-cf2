@@ -41,5 +41,6 @@ The data for the benchmark instances can be found [here](https://github.com/sibi
 
 <a id="1">[1]</a>
 Aydın, N., Muter, İ., & Birbil, Ş. İ. (2020). Multi-objective temporal bin packing problem: An application in cloud computing. Computers & Operations Research, 121, 104959.
+
 <a id="2">[2]</a>
 Martinovic, J., Strasdat, N., & Selch, M. (2021). Compact integer linear programming formulations for the temporal bin packing problem with fire-ups. Computers & Operations Research, 105288.
