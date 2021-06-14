@@ -3,6 +3,7 @@
 This repository contains compact models for the Temporal Bin Packing Problem with Fire-Ups.
 The problem was introduced in [[1]](#1).
 Some improvements for the basic models were proposed in [[2]](#2).
+A preliminary version of a paper explaining the implemented models can be found in [[3]](#3).
 
 The models in this repository are improved even more. A description of the improvements will be published soon.
 
@@ -44,3 +45,6 @@ Aydın, N., Muter, İ., & Birbil, Ş. İ. (2020). Multi-objective temporal bin p
 
 <a id="2">[2]</a>
 Martinovic, J., Strasdat, N., & Selch, M. (2021). Compact integer linear programming formulations for the temporal bin packing problem with fire-ups. Computers & Operations Research, 105288.
+
+<a id="3">[3]</a>
+Martinovic, J., Strasdat, N., Valério de Carvalho, J., Furini, F.  (2021). Variable and constraint reduction techniques for the temporal bin packing problem with fire-ups. Preprint MATH-NM-01-2021 (available online: [here](http://www.optimization-online.org/DB_HTML/2021/05/8404.html))
