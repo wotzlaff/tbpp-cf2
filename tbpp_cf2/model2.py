@@ -1,8 +1,56 @@
+from typing import Collection
 import gurobipy as gp
 from . import InstanceTBPPFU
 from .util import pairwise, compute_conflict_cliques
 
-__all__ = ['build']
+__all__ = ['build', 'set_start']
+
+
+def set_start(model: gp.Model, inst: InstanceTBPPFU, alloc: Collection[frozenset[int]]):
+    model.update()
+    # sort by first job
+    alloc = sorted(alloc, key=lambda pat: min(pat))
+
+    x = model._vars['x']
+    z = model._vars['z']
+    w = model._vars['w']
+
+    for i, k in x:
+        x[i, k].Start = 0
+
+    for k in z:
+        z[k].Start = 0
+
+    for k, pat in enumerate(alloc):
+        for i in pat:
+            x[i, k].Start = 1
+        z[k].Start = 1
+
+    for t, k in w:
+        if k >= len(alloc):
+            w[t, k].Start = 0
+            continue
+
+        if t not in model._times['ts_k'][k]:
+            w[t, k].Start = 0
+            continue
+
+        tk = model._times['t_k'][k]
+        t0 = tk[0]
+        if t == t0:
+            w[t, k].Start = 1 if any(
+                inst.s[i] <= t and inst.e[i] > t
+                for i in alloc[k]
+            ) else 0
+        else:
+            tp = next(tp for tp in reversed(tk) if tp < t)
+            w[t, k].Start = 1 if any(
+                inst.s[i] <= t and inst.e[i] > t
+                for i in alloc[k]
+            ) and not any(
+                inst.s[i] <= tp and inst.e[i] > tp
+                for i in alloc[k]
+            ) else 0
 
 
 def build(
@@ -44,6 +92,9 @@ def build(
 
     m._servers = z.sum()
     m._fireups = w.sum()
+    m._vars = dict(x=x, z=z, w=w)
+    m._times = dict(t_k=t_k, ts_k=ts_k, te_k=te_k)
+    m._set_start = lambda alloc: set_start(m, inst, alloc)
 
     # exactly one server per job
     m.addConstrs((
